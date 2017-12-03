@@ -1,13 +1,10 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
 
 <dom-module id="crypto-dashboard">
   <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]!</h2>
+    <h2>Hello world</h2>
+    <iron-ajax id="coinbase" handle-as="json" on-response="_handleResponse"></iron-ajax>
   </template>
 
   <script>
@@ -23,11 +20,44 @@
       static get is() { return 'crypto-dashboard'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'crypto-dashboard'
+          currencies: {
+            type: Array,
+            value: [
+              {
+                code: "BTC",
+                name: "Bitcoin"
+              },
+              {
+                code: "ETH",
+                name: "Ethereum"
+              },
+              {
+                code: "LTC",
+                name: "Litecoin"
+              }
+            ]
           }
-        };
+        }
+      }
+
+      ready() {
+        super.ready();
+        Polymer.RenderStatus.afterNextRender(this, function() {
+          this._getCurrencyData();
+        })
+      }
+
+      _getCurrencyData() {
+        var ajax = this.$.coinbase;
+        var currencies = this.currencies;
+        currencies.forEach(function(element) {
+          ajax.url = "https://api.coinbase.com/v2/prices/" + element.code + "-USD/spot";
+          ajax.generateRequest();
+        }, this);
+      }
+
+      _handleResponse(response) {
+        console.log(response);
       }
     }
 
