@@ -1,6 +1,6 @@
 # \<crypto-dashboard\>
 
-Cryptocurrency market dashboard
+Polymer project - Cryptocurrency market dashboard
 
 ## Install the Polymer-CLI
 
