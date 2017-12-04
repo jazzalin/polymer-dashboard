@@ -15,7 +15,6 @@
       :host {
         display: block;
         font-family: 'Roboto';
-
         --paper-cryptocurrency-primary-text-color: #0667D0;
       }
 
@@ -23,6 +22,7 @@
         color: #0667D0;
         @apply --layout-horizontal;
         @apply --layout-center-center;
+        align-content: center;
       }
 
       a {
@@ -48,13 +48,32 @@
         font-weight: 300;
       }
 
+      paper-spinner-lite {
+         /*@apply --layout-fit;*/
+         display: none;
+         margin: auto;
+         z-index: 2;
+         height: 70px;
+         width: 70px;
+         --paper-spinner-color: var(--paper-cryptocurrency-spinner-color, #2196F3);
+         --paper-spinner-stroke-width: var(--paper-cryptocurrency-spinner-width, 5px);
+         @apply --paper-cryptocurrency-spinner;
+     }
+
+     paper-spinner-lite[active] {
+         display: block;
+     }
+
+     .lineChart {
+         width: 100%
+     }
     </style>
     <h2>Hello world</h2>
     <iron-ajax id="coinbase" handle-as="json" on-response="_handleResponse" loading="{{loading}}"></iron-ajax>
     <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
     <div hidden$="[[loading]]">
       <template is="dom-repeat" items="[[currencies]]">
-        <paper-button noink on-click="_getCurrencyHistoricData" data-item$="[[item.code]]">
+        <paper-button on-click="_getCurrencyHistoricData" data-item$="[[item.code]]">
           [[item.name]] - $[[item.price]]
         </paper-button>
       </template>
